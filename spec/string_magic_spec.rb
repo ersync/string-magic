@@ -1,13 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe StringMagic do
-  it "has a version number" do
-    expect(StringMagic::VERSION).not_to be nil
-  end
-
-  # it "does something useful" do
-  #   expect(false).to eq(true)
-  # end
   describe "methods" do
     context "#word_count" do
       it "returns the correct number of words in a string" do
@@ -17,6 +10,13 @@ RSpec.describe StringMagic do
         expect(StringMagic.word_count("")).to eq(0)
       end
     end
+    context "#palindrome?" do
+      it "returns true for a palindrome string" do
+        expect(StringMagic.palindrome?("A man, a plan, a canal, Panama")).to be(true)
+      end
+      it "returns false for a non-palindrome string" do
+        expect(StringMagic.palindrome?("hello")).to be(false)
+      end
+    end
   end
-
 end

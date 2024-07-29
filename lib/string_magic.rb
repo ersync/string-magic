@@ -4,7 +4,8 @@ require_relative "string_magic/version"
 
 module StringMagic
   class Error < StandardError; end
-  def self.hello_world 
+
+  def self.hello_world
     "hello world!"
   end
 
@@ -12,4 +13,8 @@ module StringMagic
     string.split.count
   end
 
+  def self.palindrome?(string)
+    processed_string = string.downcase.gsub(/[^a-z0-9]/, "")
+    processed_string == processed_string.reverse
+  end
 end
