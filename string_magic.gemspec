@@ -10,13 +10,13 @@ Gem::Specification.new do |spec|
 
   spec.summary = "The StringMagic gem enriches Ruby's string class with an array of versatile methods designed for enhanced text formatting, manipulation, and analysis."
   spec.description = "The StringMagic gem enriches Ruby's string class by adding a suite of versatile methods. These methods offer extended capabilities for formatting, manipulating, and querying text, making string operations more efficient and expressive."
-  spec.homepage = "https://github.com/erscript/string_magic"
+  spec.homepage = "https://github.com/erscript/string-magic"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/erscript/string_magic"
-  spec.metadata["changelog_uri"] = "https://github.com/erscript/string_magic/blob/main/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "https://github.com/erscript/string-magic"
+  spec.metadata["changelog_uri"] = "https://github.com/erscript/string-magic/blob/main/CHANGELOG.md"
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
