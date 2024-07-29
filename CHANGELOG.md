@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.2.1] - 2024-07-29
+
+-   Bug fixes
+
 ## [0.2.0] - 2024-07-29
 
 -   Introduces the first substantial methods to the gem.
