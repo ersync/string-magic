@@ -1,3 +1,10 @@
+## [0.4.0] - 2025-01-01
+
+### Added
+
+-   Core string utility methods (palindrome, case conversions, word operations)
+-   Test coverage for new methods
+
 ## [0.3.0] - 2025-01-01
 
 -   Text analysis features
