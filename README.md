@@ -2,74 +2,150 @@
 
 [![Gem Version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=rb&r=r&ts=1683906897&type=6e&v=0.4.0&x2=0)](https://badge.fury.io/rb/string_magic)
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/8MamMcAVAVNWTcUqkjQk7R/Sh2DQkMWqqCv4MFvAmYWDL/tree/main.svg?style=svg&circle-token=CCIPRJ_PF8xu3Svcj2Ro4D8jhjCi7_71b7c0a7c781e09fc7194cd58cca67aecdc111b5)](https://dl.circleci.com/status-badge/redirect/circleci/8MamMcAVAVNWTcUqkjQk7R/Sh2DQkMWqqCv4MFvAmYWDL/tree/main)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-lightgreen.svg)](https://opensource.org/licenses/MIT)
 
 ## Summary
 
-A gem that enhances Ruby's string class with an array of versatile methods designed for enhanced text formatting, manipulation, and analysis.
+**StringMagic** is a Ruby gem that enhances Ruby's `String` class with powerful methods for text formatting, manipulation, and analysis. It simplifies common string operations while introducing advanced features for developers.
 
-## Description
+## Features
 
-The StringMagic gem enriches Ruby's string class by adding a suite of versatile methods. These methods offer extended capabilities for formatting, manipulating, and querying text, making string operations more efficient and expressive.
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/string_magic`. To experiment with that code, run `bin/console` for an interactive prompt.
+-   **Text Analysis**: Extract emails, URLs, dates, and more from text.
+-   **String Transformation**: Convert between cases (snake, kebab, camel, Pascal) or manipulate words.
+-   **Formatting Utilities**: Highlight phrases, truncate text, and mask sensitive information.
+-   **Core Operations**: Palindrome detection, word count, and anagram checks.
 
 ## Installation
 
-Add this line to your Gemfile:
+To include StringMagic in your project, add it to your Gemfile:
 
 ```ruby
 gem 'string_magic'
 ```
 
-And then execute:
+Then run:
 
-```ruby
+```sh
 bundle install
 ```
 
-Or install it globally:
+Or install it globally with:
 
-```ruby
+```sh
 gem install string_magic
 ```
 
 ## Usage
 
+Require the gem in your code:
+
 ```ruby
 require 'string_magic'
 
-# Example usage
-string = "hello world"
-puts StringMagic.palindrome?(string)
+# Core Operations
+puts StringMagic.palindrome?("A man a plan a canal Panama")
+# => true
+
+puts StringMagic.word_count("Hello world!")
+# => 2
+
+puts StringMagic.to_pig_latin("hello")
+# => "ellohay"
+
+# Text Analysis
+text = "Contact support@example.com or visit https://example.com"
+puts StringMagic.extract_entities(text)
+# => {
+#      emails: ["support@example.com"],
+#      urls: ["https://example.com"],
+#      phone_numbers: [],
+#      dates: [],
+#      hashtags: [],
+#      mentions: []
+#    }
+
+# Formatting Utilities
+puts StringMagic.highlight("Hello world", "world", tag: "strong")
+# => "Hello <strong>world</strong>"
+
+puts StringMagic.truncate_words("Hello world how are you", 2)
+# => "Hello world..."
+
+# Security Features
+card_text = "My card is 4111-1111-1111-1111"
+puts StringMagic.mask_sensitive_data(card_text)
+# => "My card is ************1111"
+
+# Case Conversions
+puts StringMagic.to_snake_case("HelloWorld")
+# => "hello_world"
+puts StringMagic.to_kebab_case("HelloWorld")
+# => "hello-world"
+puts StringMagic.camel_case("hello world")
+# => "HelloWorld"
+
+# Text Manipulation
+puts StringMagic.remove_duplicates("hello")
+# => "helo"
+puts StringMagic.alternating_case("hello")
+# => "HeLlO"
+puts StringMagic.reverse_words("hello world")
+# => "world hello"
 ```
 
-## Development
+## Available Methods
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run rake spec to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+### Core Operations
 
-To install this gem onto your local machine, run:
+-   `palindrome?(text)`: Determines if the given text is a palindrome.
+-   `word_count(text)`: Counts words in the text.
+-   `anagram?(text1, text2)`: Checks if two texts are anagrams.
 
-```ruby
-bundle exec rake install
-```
+### Text Analysis
 
-To release a new version, update the version number in version.rb, and then run:
+-   `readability_score(text)`: Calculates text complexity using the Flesch-Kincaid formula.
+-   `extract_entities(text)`: Extracts entities like emails, URLs, phone numbers, dates, hashtags, and mentions.
 
-```ruby
-bundle exec rake release
-```
+### String Transformation
 
-This will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+-   `to_snake_case(text)`: Converts text to `snake_case`.
+-   `to_kebab_case(text)`: Converts text to `kebab-case`.
+-   `to_pascal_case(text)`: Converts text to `PascalCase`.
+-   `camel_case(text)`: Converts text to `camelCase`.
+
+### Formatting Utilities
+
+-   `highlight(text, phrases, options)`: Highlights text with HTML tags.
+-   `truncate_words(text, count, options)`: Truncates text to a specified number of words.
+-   `truncate_sentences(text, count, options)`: Truncates text to a specified number of sentences.
+
+### Security Features
+
+-   `mask_sensitive_data(text, options)`: Masks sensitive information like credit card numbers and emails.
+
+### Text Manipulation
+
+-   `remove_duplicates(text)`: Removes duplicate characters from text.
+-   `alternating_case(text)`: Alternates character case in text.
+-   `reverse_words(text)`: Reverses the order of words in text.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/erscript/string-magic. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/erscript/string-magic/blob/main/CODE_OF_CONDUCT.md).
+I welcome contributions! Here's how you can help:
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Write tests for your changes
+4. Commit your changes (`git commit -am 'feat: add amazing feature'`)
+5. Push to the branch (`git push origin feature/amazing-feature`)
+6. Open a Pull Request
+
+Please make sure to update tests and follow coding standards.
 
 ## License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+This gem is open source and available under the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
 
-Everyone interacting in the StringMagic project's codebases, issue trackers, chat rooms, and mailing lists is expected to follow the [code of conduct](https://github.com/erscript/string-magic/blob/main/CODE_OF_CONDUCT.md).
+Interactions in the project's codebases, issue trackers, and other channels must adhere to the [Code of Conduct](https://github.com/erscript/string-magic/blob/main/CODE_OF_CONDUCT.md).
