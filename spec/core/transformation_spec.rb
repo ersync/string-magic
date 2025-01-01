@@ -1,6 +1,49 @@
 require "spec_helper"
 
 RSpec.describe StringMagic::Core::Transformation do
+  describe ".titleize_names" do
+    it "capitalizes regular names" do
+      expect(StringMagic.titleize_names("john smith")).to eq("John Smith")
+    end
+
+    it "handles special case company names" do
+      expect(StringMagic.titleize_names("mcdonald ebay")).to eq("McDonald eBay")
+    end
+
+    it "handles prefixes correctly" do
+      expect(StringMagic.titleize_names("ludwig van beethoven")).to eq("Ludwig van Beethoven")
+    end
+
+    it "handles multiple special cases" do
+      text = "steve o'reilly bought a macbook from ebay"
+      expect(StringMagic.titleize_names(text)).to eq("Steve O'Reilly Bought a MacBook From eBay")
+    end
+
+    it "handles empty string" do
+      expect(StringMagic.titleize_names("")).to eq("")
+    end
+
+    it "handles nil" do
+      expect(StringMagic.titleize_names(nil)).to be_nil
+    end
+
+    it "handles multiple word prefixes" do
+      expect(StringMagic.titleize_names("leonardo da vinci")).to eq("Leonardo da Vinci")
+    end
+
+    it "capitalizes prefix at start of name" do
+      expect(StringMagic.titleize_names("de silva")).to eq("De Silva")
+    end
+
+    it "preserves existing correct capitalization in special cases" do
+      expect(StringMagic.titleize_names("iPhone iPad MacBook")).to eq("iPhone iPad MacBook")
+    end
+
+    it "handles mixed case input" do
+      expect(StringMagic.titleize_names("jOhN mcDOnalD")).to eq("John McDonald")
+    end
+  end
+
   describe ".to_snake_case" do
     context "when handling different input formats" do
       it "converts camelCase to snake_case" do
