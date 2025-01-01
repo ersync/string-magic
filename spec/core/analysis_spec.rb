@@ -1,8 +1,8 @@
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe StringMagic::Core::Analysis do
-  describe '#readability_score' do
-    context 'when calculating readability scores' do
+  describe "#readability_score" do
+    context "when calculating readability scores" do
       it "returns 0 for an empty string" do
         expect(StringMagic.readability_score("")).to eq(0)
       end
@@ -28,8 +28,8 @@ RSpec.describe StringMagic::Core::Analysis do
     end
   end
 
-  describe '#extract_entities' do
-    context 'when extracting different types of entities' do
+  describe "#extract_entities" do
+    context "when extracting different types of entities" do
       it "raises MalformedInputError for non-string input" do
         expect { StringMagic.extract_entities(123) }.to raise_error(StringMagic::MalformedInputError)
       end
@@ -40,7 +40,7 @@ RSpec.describe StringMagic::Core::Analysis do
         expect(result[:emails]).to contain_exactly("example@test.com", "support@domain.org")
       end
 
-      context 'URL extraction' do
+      context "URL extraction" do
         it "handles URLs with various protocols" do
           text = "Visit https://example.com http://test.com //cdn.com"
           result = StringMagic.extract_entities(text)

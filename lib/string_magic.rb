@@ -1,11 +1,16 @@
 # frozen_string_literal: true
 
 require_relative "string_magic/version"
+require_relative "string_magic/core/analysis"
+require_relative "string_magic/core/transformation"
 
 module StringMagic
-  class MalformedInputError < StandardError; end
   class Error < StandardError; end
+  class MalformedInputError < Error; end
+
+  # Now extend the modules
   extend Core::Analysis
+  extend Core::Transformation
 
   def self.hello_world
     "hello world!"
