@@ -1,30 +1,19 @@
-# frozen_string_literal: true
+require 'spec_helper'
 
-RSpec.describe StringMagic do
-  describe "methods" do
-    context "#word_count" do
-      it "returns the correct number of words in a string" do
-        expect(StringMagic.word_count("Hello, World!")).to eq(2)
-      end
-
-      it "returns the correct number of words for an empty string" do
-        expect(StringMagic.word_count("")).to eq(0)
-      end
-    end
-
-    context "#palindrome?" do
-      it "returns true for a palindrome string" do
-        expect(StringMagic.palindrome?("A man, a plan, a canal, Panama")).to be(true)
-      end
-
-      it "returns false for a non-palindrome string" do
-        expect(StringMagic.palindrome?("hello")).to be(false)
-      end
-    end
-
-    context "#readability_score" do
+RSpec.describe StringMagic::Core::Analysis do
+  describe '#readability_score' do
+    context 'when calculating readability scores' do
       it "returns 0 for an empty string" do
         expect(StringMagic.readability_score("")).to eq(0)
+      end
+
+      it "returns 0 for text without proper sentences" do
+        expect(StringMagic.readability_score("just words without endings")).to eq(0)
+      end
+
+      it "calculates correct Flesch-Kincaid score" do
+        text = "This is a simple sentence. Another follows it."
+        expect(StringMagic.readability_score(text)).to be_within(0.1).of(3.7)
       end
 
       it "returns the correct readability score for simple text" do
@@ -37,8 +26,10 @@ RSpec.describe StringMagic do
         expect(StringMagic.readability_score(text)).to be > 0
       end
     end
+  end
 
-    context "#extract_entities" do
+  describe '#extract_entities' do
+    context 'when extracting different types of entities' do
       it "raises MalformedInputError for non-string input" do
         expect { StringMagic.extract_entities(123) }.to raise_error(StringMagic::MalformedInputError)
       end
@@ -49,10 +40,16 @@ RSpec.describe StringMagic do
         expect(result[:emails]).to contain_exactly("example@test.com", "support@domain.org")
       end
 
-      it "extracts URLs from text" do
-        text = "Visit https://example.com and http://test.org for more info."
-        result = StringMagic.extract_entities(text)
-        expect(result[:urls]).to contain_exactly("https://example.com", "http://test.org")
+      context 'URL extraction' do
+        it "handles URLs with various protocols" do
+          text = "Visit https://example.com http://test.com //cdn.com"
+          result = StringMagic.extract_entities(text)
+          expect(result[:urls]).to contain_exactly(
+            "https://example.com",
+            "http://test.com",
+            "//cdn.com"
+          )
+        end
       end
 
       it "extracts phone numbers from text" do

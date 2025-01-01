@@ -3,19 +3,21 @@
 require_relative "string_magic/version"
 
 module StringMagic
+  class MalformedInputError < StandardError; end
   class Error < StandardError; end
+  extend Core::Analysis
 
   def self.hello_world
     "hello world!"
   end
 
   def self.word_count(string)
-    string.split.count
+    string.split.size
   end
 
   def self.palindrome?(string)
-    processed_string = string.downcase.gsub(/[^a-z0-9]/, "")
-    processed_string == processed_string.reverse
+    cleaned = string.downcase.gsub(/[^a-z0-9]/, "")
+    cleaned == cleaned.reverse
   end
 
   def self.capitalize_words(string)
