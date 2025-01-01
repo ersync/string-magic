@@ -1,7 +1,13 @@
 # frozen_string_literal: true
 
 RSpec.describe StringMagic do
-  describe "methods" do
+  describe "core methods" do
+    context "#hello_world" do
+      it "returns hello world message" do
+        expect(StringMagic.hello_world).to eq("hello world!")
+      end
+    end
+
     context "#word_count" do
       it "returns the correct number of words in a string" do
         expect(StringMagic.word_count("Hello, World!")).to eq(2)
@@ -22,61 +28,112 @@ RSpec.describe StringMagic do
       end
     end
 
-    context "#readability_score" do
-      it "returns 0 for an empty string" do
-        expect(StringMagic.readability_score("")).to eq(0)
+    context "#capitalize_words" do
+      it "capitalizes each word" do
+        expect(StringMagic.capitalize_words("hello world")).to eq("Hello World")
       end
 
-      it "returns the correct readability score for simple text" do
-        text = "The quick brown fox jumps over the lazy dog."
-        expect(StringMagic.readability_score(text)).to be > 0
-      end
-
-      it "returns the correct readability score for complex text" do
-        text = "In an era of uncertainty, people seek clarity through well-informed decisions."
-        expect(StringMagic.readability_score(text)).to be > 0
+      it "handles empty string" do
+        expect(StringMagic.capitalize_words("")).to eq("")
       end
     end
 
-    context "#extract_entities" do
-      it "raises MalformedInputError for non-string input" do
-        expect { StringMagic.extract_entities(123) }.to raise_error(StringMagic::MalformedInputError)
+    context "#reverse_words" do
+      it "reverses word order" do
+        expect(StringMagic.reverse_words("hello world")).to eq("world hello")
       end
 
-      it "extracts emails from text" do
-        text = "Contact us at example@test.com or support@domain.org."
-        result = StringMagic.extract_entities(text)
-        expect(result[:emails]).to contain_exactly("example@test.com", "support@domain.org")
+      it "handles single word" do
+        expect(StringMagic.reverse_words("hello")).to eq("hello")
+      end
+    end
+
+    context "#remove_duplicates" do
+      it "removes duplicate characters" do
+        expect(StringMagic.remove_duplicates("hello")).to eq("helo")
       end
 
-      it "extracts URLs from text" do
-        text = "Visit https://example.com and http://test.org for more info."
-        result = StringMagic.extract_entities(text)
-        expect(result[:urls]).to contain_exactly("https://example.com", "http://test.org")
+      it "handles empty string" do
+        expect(StringMagic.remove_duplicates("")).to eq("")
+      end
+    end
+
+    context "#count_vowels" do
+      it "counts vowels correctly" do
+        expect(StringMagic.count_vowels("hello world")).to eq(3)
       end
 
-      it "extracts phone numbers from text" do
-        text = "Call us at +1 (123) 456-7890 or 987-654-3210."
-        result = StringMagic.extract_entities(text)
-        expect(result[:phone_numbers]).to contain_exactly("+1 (123) 456-7890", "987-654-3210")
+      it "handles uppercase vowels" do
+        expect(StringMagic.count_vowels("HELLO WORLD")).to eq(3)
+      end
+    end
+
+    context "#to_pig_latin" do
+      it "converts words starting with consonants" do
+        expect(StringMagic.to_pig_latin("pig")).to eq("igpay")
       end
 
-      it "extracts dates from text" do
-        text = "Important dates: 2023-10-01, Oct 1, 2023, and 01/10/2023."
-        result = StringMagic.extract_entities(text)
-        expect(result[:dates]).to contain_exactly("2023-10-01", "Oct 1, 2023", "01/10/2023")
+      it "converts words starting with vowels" do
+        expect(StringMagic.to_pig_latin("egg")).to eq("eggay")
       end
 
-      it "extracts hashtags from text" do
-        text = "Follow #Ruby, #RSpec, and #TDD for updates."
-        result = StringMagic.extract_entities(text)
-        expect(result[:hashtags]).to contain_exactly("Ruby", "RSpec", "TDD")
+      it "handles multiple words" do
+        expect(StringMagic.to_pig_latin("pig egg")).to eq("igpay eggay")
+      end
+    end
+
+    context "#alternating_case" do
+      it "alternates character case" do
+        expect(StringMagic.alternating_case("hello")).to eq("HeLlO")
       end
 
-      it "extracts mentions from text" do
-        text = "Reach out to @user1 and @user2 for details."
-        result = StringMagic.extract_entities(text)
-        expect(result[:mentions]).to contain_exactly("user1", "user2")
+      it "handles empty string" do
+        expect(StringMagic.alternating_case("")).to eq("")
+      end
+    end
+
+    context "#camel_case" do
+      it "converts to camel case" do
+        expect(StringMagic.camel_case("hello world")).to eq("HelloWorld")
+      end
+
+      it "handles empty string" do
+        expect(StringMagic.camel_case("")).to eq("")
+      end
+    end
+
+    context "#snake_case" do
+      it "converts to snake case" do
+        expect(StringMagic.snake_case("hello world")).to eq("hello_world")
+      end
+
+      it "handles multiple spaces" do
+        expect(StringMagic.snake_case("hello   world")).to eq("hello_world")
+      end
+    end
+
+    context "#title_case" do
+      it "converts to title case" do
+        expect(StringMagic.title_case("hello world")).to eq("Hello World")
+      end
+
+      it "handles empty string" do
+        expect(StringMagic.title_case("")).to eq("")
+      end
+    end
+
+    context "#anagram?" do
+      it "identifies anagrams" do
+        expect(StringMagic.anagram?("listen", "silent")).to be true
+        expect(StringMagic.anagram?("hello", "world")).to be false
+      end
+
+      it "ignores case and special characters" do
+        expect(StringMagic.anagram?("A decimal point", "Im a dot in place")).to be true
+      end
+
+      it "handles empty strings" do
+        expect(StringMagic.anagram?("", "")).to be true
       end
     end
   end

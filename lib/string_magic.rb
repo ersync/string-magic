@@ -3,14 +3,19 @@
 require_relative "string_magic/version"
 require_relative "string_magic/core/analysis"
 require_relative "string_magic/core/transformation"
+require_relative "string_magic/formatting/highlighting"
+require_relative "string_magic/formatting/truncation"
+require_relative "string_magic/advanced/security"
 
 module StringMagic
   class Error < StandardError; end
   class MalformedInputError < Error; end
 
-  # Now extend the modules
   extend Core::Analysis
   extend Core::Transformation
+  extend Formatting::Highlighting
+  extend Formatting::Truncation
+  extend Advanced::Security
 
   def self.hello_world
     "hello world!"
