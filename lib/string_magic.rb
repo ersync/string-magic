@@ -1,21 +1,28 @@
 # frozen_string_literal: true
 
 require_relative "string_magic/version"
+require_relative "string_magic/core/analysis"
+require_relative "string_magic/core/transformation"
 
 module StringMagic
   class Error < StandardError; end
+  class MalformedInputError < Error; end
+
+  # Now extend the modules
+  extend Core::Analysis
+  extend Core::Transformation
 
   def self.hello_world
     "hello world!"
   end
 
   def self.word_count(string)
-    string.split.count
+    string.split.size
   end
 
   def self.palindrome?(string)
-    processed_string = string.downcase.gsub(/[^a-z0-9]/, "")
-    processed_string == processed_string.reverse
+    cleaned = string.downcase.gsub(/[^a-z0-9]/, "")
+    cleaned == cleaned.reverse
   end
 
   def self.capitalize_words(string)
