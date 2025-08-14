@@ -1,151 +1,81 @@
-# StringMagic
+# StringMagic - v0.5.0
+[![Gem Version](https://badge.fury.io/rb/string_magic.svg)](https://badge.fury.io/rb/string_magic)
+[![Build Status](https://dl.circleci.com/status-badge/img/circleci/8MamMcAVAVNWTcUqkjQk7R/Sh2DQkMWqqCv4MFvAmYWDL/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/8MamMcAVAVNWTcUqkjQk7R/Sh2DQkMWqqCv4MFvAmYWDL/tree/main)
+[![License: MIT](https://img.shields.io/badge/License-MIT-lightgreen.svg)](LICENSE)
 
-[![Gem Version](https://d25lcipzij17d.cloudfront.net/badge.svg?id=rb&r=r&ts=1683906897&type=6e&v=0.4.0&x2=0)](https://badge.fury.io/rb/string_magic)
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/8MamMcAVAVNWTcUqkjQk7R/Sh2DQkMWqqCv4MFvAmYWDL/tree/main.svg?style=svg&circle-token=CCIPRJ_PF8xu3Svcj2Ro4D8jhjCi7_71b7c0a7c781e09fc7194cd58cca67aecdc111b5)](https://dl.circleci.com/status-badge/redirect/circleci/8MamMcAVAVNWTcUqkjQk7R/Sh2DQkMWqqCv4MFvAmYWDL/tree/main)
-[![License: MIT](https://img.shields.io/badge/License-MIT-lightgreen.svg)](https://opensource.org/licenses/MIT)
+**StringMagic** super-charges Ruby's `String` with batteries-included helpers for formatting, validation, analysis, transformation, and security all in one tidy gem.
 
-## Summary
+## Why StringMagic?
+- Zero dependencies – pure Ruby
+- Non-destructive: original strings are never mutated
+- Thread-safe & fully tested (160+ RSpec examples, ~98% coverage)
+- Drop-in: optionally auto-mixes into String, or use module methods (`StringMagic.to_slug(...)`)
 
-**StringMagic** is a Ruby gem that enhances Ruby's `String` class with powerful methods for text formatting, manipulation, and analysis. It simplifies common string operations while introducing advanced features for developers.
+## Quickstart Cheatsheet
 
-## Features
+```ruby
+# Formatting
+"Hello world".truncate_words(1)             # => "Hello..."
+"user@domain.com".mask_emails               # => "u********@domain.com"
+"Ruby on Rails".highlight('Ruby')           # => "<mark>Ruby</mark> on Rails"
 
--   **Text Analysis**: Extract emails, URLs, dates, and more from text.
--   **String Transformation**: Convert between cases (snake, kebab, camel, Pascal) or manipulate words.
--   **Formatting Utilities**: Highlight phrases, truncate text, and mask sensitive information.
--   **Core Operations**: Palindrome detection, word count, and anagram checks.
+# Validation
+"test@example.com".email?                   # => true
+"4111111111111111".credit_card?             # => true
+"racecar".palindrome?                       # => true
+
+# Transformation
+"CamelCase".to_snake_case                   # => "camel_case"
+"user input".to_filename_safe               # => "user_input"
+"second".ordinalize                         # => "2nd"
+
+# Analysis
+"Visit https://example.com".extract_urls    # => ["https://example.com"]
+"Great product!".sentiment_indicators       # => {:positive=>1.0, :negative=>0.0, :neutral=>0}
+```
 
 ## Installation
-
-To include StringMagic in your project, add it to your Gemfile:
-
+```bash
+gem install string_magic
+```
+Or add to your Gemfile:
 ```ruby
 gem 'string_magic'
 ```
 
-Then run:
-
-```sh
-bundle install
-```
-
-Or install it globally with:
-
-```sh
-gem install string_magic
-```
-
-## Usage
-
-Require the gem in your code:
-
-```ruby
-require 'string_magic'
-
-# Core Operations
-puts StringMagic.palindrome?("A man a plan a canal Panama")
-# => true
-
-puts StringMagic.word_count("Hello world!")
-# => 2
-
-puts StringMagic.to_pig_latin("hello")
-# => "ellohay"
-
-# Text Analysis
-text = "Contact support@example.com or visit https://example.com"
-puts StringMagic.extract_entities(text)
-# => {
-#      emails: ["support@example.com"],
-#      urls: ["https://example.com"],
-#      phone_numbers: [],
-#      dates: [],
-#      hashtags: [],
-#      mentions: []
-#    }
-
-# Formatting Utilities
-puts StringMagic.highlight("Hello world", "world", tag: "strong")
-# => "Hello <strong>world</strong>"
-
-puts StringMagic.truncate_words("Hello world how are you", 2)
-# => "Hello world..."
-
-# Security Features
-card_text = "My card is 4111-1111-1111-1111"
-puts StringMagic.mask_sensitive_data(card_text)
-# => "My card is ************1111"
-
-# Case Conversions
-puts StringMagic.to_snake_case("HelloWorld")
-# => "hello_world"
-puts StringMagic.to_kebab_case("HelloWorld")
-# => "hello-world"
-puts StringMagic.camel_case("hello world")
-# => "HelloWorld"
-
-# Text Manipulation
-puts StringMagic.remove_duplicates("hello")
-# => "helo"
-puts StringMagic.alternating_case("hello")
-# => "HeLlO"
-puts StringMagic.reverse_words("hello world")
-# => "world hello"
-```
-
-## Available Methods
+## Full Documentation
 
 ### Core Operations
+- **Case conversion**: `to_snake_case`, `to_kebab_case`, `to_camel_case`, `to_pascal_case`, `to_title_case`
+- **Text manipulation**: `reverse_words`, `alternating_case`, `remove_duplicate_chars`, `remove_duplicate_words`
+- **HTML handling**: `remove_html_tags`, `escape_html`
 
--   `palindrome?(text)`: Determines if the given text is a palindrome.
--   `word_count(text)`: Counts words in the text.
--   `anagram?(text1, text2)`: Checks if two texts are anagrams.
+### Validation
+- Format checks: `email?`, `url?`, `phone?`, `credit_card?`
+- Text relations: `palindrome?`, `anagram_of?`
+- Password strength: `strong_password?`
 
-### Text Analysis
+### Analysis
+- **Entity extraction**: `extract_emails`, `extract_urls`, `extract_phones`, `extract_dates`
+- **Text metrics**: `readability_score`, `word_frequency`, `sentiment_indicators`
 
--   `readability_score(text)`: Calculates text complexity using the Flesch-Kincaid formula.
--   `extract_entities(text)`: Extracts entities like emails, URLs, phone numbers, dates, hashtags, and mentions.
+### Formatting
+- **Truncation**: `truncate_words`, `truncate_sentences`, `truncate_characters`, `smart_truncate`
+- **Highlighting**: `highlight`, `remove_highlights`, `highlight_urls`
 
-### String Transformation
+### Security
+- **Data masking**: `mask_sensitive_data`, `mask_credit_cards`, `mask_emails`, `mask_phones`
+- **Detection**: `contains_sensitive_data?`
 
--   `to_snake_case(text)`: Converts text to `snake_case`.
--   `to_kebab_case(text)`: Converts text to `kebab-case`.
--   `to_pascal_case(text)`: Converts text to `PascalCase`.
--   `camel_case(text)`: Converts text to `camelCase`.
-
-### Formatting Utilities
-
--   `highlight(text, phrases, options)`: Highlights text with HTML tags.
--   `truncate_words(text, count, options)`: Truncates text to a specified number of words.
--   `truncate_sentences(text, count, options)`: Truncates text to a specified number of sentences.
-
-### Security Features
-
--   `mask_sensitive_data(text, options)`: Masks sensitive information like credit card numbers and emails.
-
-### Text Manipulation
-
--   `remove_duplicates(text)`: Removes duplicate characters from text.
--   `alternating_case(text)`: Alternates character case in text.
--   `reverse_words(text)`: Reverses the order of words in text.
+### Utilities
+- **Inflection**: `to_plural`, `to_singular`, `ordinalize`, `humanize`
+- **Slug generation**: `to_slug`, `to_url_slug`, `to_filename_safe`
 
 ## Contributing
-
-I welcome contributions! Here's how you can help:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Write tests for your changes
-4. Commit your changes (`git commit -am 'feat: add amazing feature'`)
-5. Push to the branch (`git push origin feature/amazing-feature`)
-6. Open a Pull Request
-
-Please make sure to update tests and follow coding standards.
+1. Fork → `git checkout -b feature/awesome`
+2. Add specs for your change
+3. `bundle exec rspec`
+4. PR ✉️ – we love improvements!
 
 ## License
-
-This gem is open source and available under the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Interactions in the project's codebases, issue trackers, and other channels must adhere to the [Code of Conduct](https://github.com/erscript/string-magic/blob/main/CODE_OF_CONDUCT.md).
+MIT - See [LICENSE](LICENSE) for details.

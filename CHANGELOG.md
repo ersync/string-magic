@@ -1,3 +1,24 @@
+## [0.5.0] - 2025-08-12
+
+### Added
+
+- **StringMagic::Core::Validation** - Email, URL, phone, credit card validation and more
+- **StringMagic::Utilities::Slug** - Convert text to URL-safe slugs and filename-safe strings  
+- **StringMagic::Utilities::Inflection** - Pluralize, singularize, ordinalize, and humanize text
+
+### Enhanced
+
+- **StringMagic::Core::Transformation** - New case conversions and text manipulation methods
+- **StringMagic::Core::Analysis** - Improved entity extraction and sentiment analysis
+- **StringMagic::Formatting::Truncation** - Smart word, sentence, and character truncation
+- **StringMagic::Formatting::Highlighting** - HTML highlighting and URL auto-linking
+- **StringMagic::Advanced::Security** - Mask sensitive data like credit cards and emails
+
+### Changed
+
+- Modular code organization
+- All methods now available as both String instance methods and module methods
+
 ## [0.4.0] - 2025-01-01
 
 ### Added

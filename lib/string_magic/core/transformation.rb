@@ -1,54 +1,102 @@
+# frozen_string_literal: true
+
+require 'cgi' # for HTML escaping
+
 module StringMagic
   module Core
     module Transformation
-      def titleize_names(text)
-        return text if text.nil? || text.empty?
+      # ------------------------------------------------------------
+      # Case conversions
+      # ------------------------------------------------------------
 
-        special_cases = {
-          "mcdonald" => "McDonald",
-          "o'reilly" => "O'Reilly",
-          "macbook" => "MacBook",
-          "iphone" => "iPhone",
-          "ipad" => "iPad",
-          "ebay" => "eBay"
-        }
+      def to_snake_case
+        return '' if empty?
 
-        prefixes = Set.new(%w[van de la du das dos di da delle degli delle])
-        articles = Set.new(%w[a an the]) # Add this line
-
-        words = text.downcase.split(/\s+/)
-        words.map.with_index do |word, index|
-          if special_cases.key?(word)
-            special_cases[word]
-          elsif prefixes.include?(word) && !index.zero?
-            word
-          elsif articles.include?(word) && !index.zero? # Add this condition
-            word.downcase
-          else
-            word.capitalize
-          end
-        end.join(" ")
+        str = dup
+        str.gsub!(/::/, '/')
+        str.gsub!(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+        str.gsub!(/([a-z\d])([A-Z])/,  '\1_\2')
+        str.tr!('-', '_')
+        str.gsub!(/\s+/, '_')
+        str.downcase!
+        str.squeeze('_').gsub(/^_+|_+$/, '')
       end
 
-      def to_snake_case(string)
-        return "" if string.nil?
-
-        string.gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
-              .gsub(/([a-z\d])([A-Z])/, '\1_\2')
-              .tr("-", "_")
-              .downcase
+      def to_kebab_case
+        to_snake_case.tr('_', '-')
       end
 
-      def to_kebab_case(string)
-        to_snake_case(string).tr("_", "-")
+      # first_letter: :lower (default) or :upper
+      def to_camel_case(first_letter: :lower)
+        return '' if empty?
+
+        words = to_snake_case.split('_').map(&:capitalize)
+        words[0].downcase! if first_letter == :lower && words.any?
+        words.join
       end
 
-      def to_pascal_case(string)
-        return "" if string.nil?
-        return string if string.match?(/^[A-Z][a-z]*([A-Z][a-z]*)*$/)
+      def to_pascal_case
+        to_camel_case(first_letter: :upper)
+      end
 
-        string.split(/[-_\s]+/).map(&:capitalize).join
+      def to_title_case
+        return '' if empty?
+
+        small = %w[a an and as at but by for if in nor of on or so the to up yet]
+        words = downcase.split(/\s+/)
+        words.map!.with_index do |w, i|
+          (i.zero? || i == words.size - 1 || !small.include?(w)) ? w.capitalize : w
+        end
+        words.join(' ')
+      end
+
+      # ------------------------------------------------------------
+      # Simple word / char utilities
+      # ------------------------------------------------------------
+
+      def reverse_words
+        return '' if empty?
+        split(/\s+/).reverse.join(' ')
+      end
+
+      def alternating_case
+        return '' if empty?
+        each_char.with_index.map { |c, i| i.even? ? c.upcase : c.downcase }.join
+      end
+
+      def remove_duplicate_chars
+        return '' if empty?
+        each_char.to_a.uniq.join
+      end
+
+      def remove_duplicate_words
+        return '' if empty?
+        split(/\s+/).uniq.join(' ')
+      end
+
+      # ------------------------------------------------------------
+      # Misc. text transformations
+      # ------------------------------------------------------------
+
+      def squeeze_whitespace
+        return '' if empty?
+        gsub(/\s+/, ' ').strip
+      end
+
+      def remove_html_tags
+        return '' if empty?
+        gsub(/<[^>]*>/, '')
+      end
+
+      def escape_html
+        return '' if empty?
+        CGI.escapeHTML(self)
       end
     end
   end
+end
+
+# Optional automatic mix-in
+class String
+  include StringMagic::Core::Transformation
 end
